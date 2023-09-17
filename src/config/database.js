@@ -1,21 +1,24 @@
-const mysql = require('mysql');
+const { Sequelize } = require('sequelize');
+const UserModel = require('../models/user');
 
-const connection = mysql.createConnection({
-	host: process.env.MYSQLDB_HOST || "localhost",
-	user: process.env.MYSQLDB_USER,
-	password: process.env.MYSQLDB_ROOT_PASSWORD,
-	database: process.env.MYSQLDB_DATABASE
-  });
-  
-  connection.connect(function(err) {
-	if (err) throw err;
-	console.log("Connected!");
-	connection.query("CREATE DATABASE mydb", function (err, result) {
-	  if (err) throw err;
-	  console.log("Database created");
-	});
-  });
+const sequelize = new Sequelize("shareimmo_db","root", "123456", {
+    host: "mysqldb" || "localhost",
+	port: 3306,
+    dialect: 'mysql'
+});
 
-const query = (...args) => connection.query(...args);
+const User = UserModel(sequelize);
 
-module.exports = { query };
+sequelize.sync({
+})
+    .then(() => {
+        console.log('Models synced with database');
+    })
+    .catch(err => {
+        console.log('An error occurred:', err);
+    });
+
+module.exports = {
+  User,
+  sequelize,
+};
