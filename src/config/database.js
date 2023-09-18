@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 const UserModel = require('../models/user');
 
-const sequelize = new Sequelize("shareimmo_db","root", "123456", {
+const sequelize = new Sequelize("shareimmo","root", "123456", {
     host: "mysqldb" || "localhost",
 	port: 3306,
     dialect: 'mysql'
